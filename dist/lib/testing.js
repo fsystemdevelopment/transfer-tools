@@ -152,8 +152,8 @@ exports.genUtf8Str = genUtf8Str;
     }
     /** throw error if hex does not represent a valid utf8 string */
     function hexStrToUtf8Str(hex) {
-        var str = stringTransform_1.transcode(hex, "hex", "utf8");
-        if (stringTransform_1.transcode(str, "utf8", "hex") !== hex) {
+        var str = stringTransform_1.safeBufferFromTo(hex, "hex", "utf8");
+        if (stringTransform_1.safeBufferFromTo(str, "utf8", "hex") !== hex) {
             throw new Error("Invalid UTF8 data");
         }
         return str;

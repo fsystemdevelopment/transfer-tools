@@ -37,9 +37,6 @@ export function get(serializers: Serializer<object>[]= []) {
             return myJson.parse(str).pop();
 
         }
-
-
     };
-
 
 }

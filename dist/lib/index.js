@@ -4,5 +4,7 @@ var JSON_CUSTOM = require("./JSON_CUSTOM");
 exports.JSON_CUSTOM = JSON_CUSTOM;
 var stringTransform = require("./stringTransform");
 exports.stringTransform = stringTransform;
+var stringTransformExt = require("./stringTransformExt");
+exports.stringTransformExt = stringTransformExt;
 var testing = require("./testing");
 exports.testing = testing;

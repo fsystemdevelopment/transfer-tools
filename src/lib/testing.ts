@@ -1,4 +1,4 @@
-import { transcode } from "./stringTransform";
+import { safeBufferFromTo } from "./stringTransform";
 
 /** Compare if two object represent the same data, [ "ok", "foo" ] <=> [ "foo", "ok" ] */
 export function assertSame<T>(
@@ -174,9 +174,9 @@ export namespace genUtf8Str {
     /** throw error if hex does not represent a valid utf8 string */
     function hexStrToUtf8Str(hex: string) {
 
-        let str = transcode(hex, "hex", "utf8");
+        let str = safeBufferFromTo(hex, "hex", "utf8");
 
-        if (transcode(str, "utf8", "hex") !== hex) {
+        if (safeBufferFromTo(str, "utf8", "hex") !== hex) {
             throw new Error("Invalid UTF8 data");
         }
 
