@@ -1,4 +1,5 @@
 import { safeBufferFromTo } from "./stringTransform";
+import * as seedrandom from "seedrandom";
 
 /** Compare if two object represent the same data, [ "ok", "foo" ] <=> [ "foo", "ok" ] */
 export function assertSame<T>(
@@ -85,8 +86,8 @@ export namespace assertSame {
                 } else {
 
                     perform(
-                        Object.keys(o1).filter(key=> o1[key] !== undefined ), 
-                        Object.keys(o2).filter(key => o2[key] !== undefined )
+                        Object.keys(o1).filter(key => o1[key] !== undefined),
+                        Object.keys(o2).filter(key => o2[key] !== undefined)
                     );
 
                 }
@@ -123,10 +124,43 @@ export const genHexStr = (n: number) => (new Array(n))
     .join("")
     ;
 
+export namespace seedRandom {
+
+    const random = Math.random;
+
+    export function plant(seed: string) {
+
+        Math.random = (function () {
+
+            let prev: number | undefined = undefined;
+
+            return function random() {
+
+                prev = seedrandom(
+                    prev === undefined ?
+                        seed :
+                        prev.toFixed(12)
+                )() as number;
+
+                return prev;
+
+            };
+
+        })();
+
+    }
+
+    export function restore() {
+        Math.random = random;
+    }
+
+}
+
 /** Length is not Byte length but the number of char */
 export function genUtf8Str(
     length: number,
-    restrict?: "ONLY 4 BYTE CHAR" | "ONLY 1 BYTE CHAR"
+    restrict?: "ONLY 4 BYTE CHAR" | "ONLY 1 BYTE CHAR",
+    seed?: string
 ): string {
 
     let charGenerator: () => string;
@@ -137,7 +171,15 @@ export function genUtf8Str(
         case "ONLY 4 BYTE CHAR": charGenerator = genUtf8Str.genUtf8Char4B; break;
     }
 
-    return (new Array(length)).fill("").map(() => charGenerator()).join("");
+    if (typeof seed === "string") {
+        seedRandom.plant(seed);
+    }
+
+    const out = (new Array(length)).fill("").map(() => charGenerator()).join("");
+
+    seedRandom.restore();
+
+    return out;
 
 }
 

@@ -8,8 +8,12 @@ export declare namespace assertSame {
 export declare const genDigits: (n: number) => string;
 /** Hex str to lower char */
 export declare const genHexStr: (n: number) => string;
+export declare namespace seedRandom {
+    function plant(seed: string): void;
+    function restore(): void;
+}
 /** Length is not Byte length but the number of char */
-export declare function genUtf8Str(length: number, restrict?: "ONLY 4 BYTE CHAR" | "ONLY 1 BYTE CHAR"): string;
+export declare function genUtf8Str(length: number, restrict?: "ONLY 4 BYTE CHAR" | "ONLY 1 BYTE CHAR", seed?: string): string;
 export declare namespace genUtf8Str {
     /** return a random utf8 char that fit on one byte */
     function genUtf8Char1B(): string;

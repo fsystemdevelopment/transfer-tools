@@ -11,6 +11,7 @@ var __values = (this && this.__values) || function (o) {
 };
 exports.__esModule = true;
 var stringTransform_1 = require("./stringTransform");
+var seedrandom = require("seedrandom");
 /** Compare if two object represent the same data, [ "ok", "foo" ] <=> [ "foo", "ok" ] */
 function assertSame(o1, o2, errorMessage) {
     if (errorMessage === void 0) { errorMessage = "assertSame error"; }
@@ -28,6 +29,7 @@ exports.assertSame = assertSame;
 (function (assertSame) {
     assertSame.handleArrayAsSet = true;
     function perform(o1, o2) {
+        var e_1, _a, e_2, _b;
         if (o1 instanceof Date) {
             if (!(o2 instanceof Date)) {
                 console.assert(false, "M0");
@@ -54,7 +56,7 @@ exports.assertSame = assertSame;
                                 try {
                                     perform(val1, val2);
                                 }
-                                catch (_a) {
+                                catch (_c) {
                                     continue;
                                 }
                                 isFound = true;
@@ -62,22 +64,22 @@ exports.assertSame = assertSame;
                                 break;
                             }
                         }
-                        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+                        catch (e_2_1) { e_2 = { error: e_2_1 }; }
                         finally {
                             try {
                                 if (o2Set_1_1 && !o2Set_1_1.done && (_b = o2Set_1["return"])) _b.call(o2Set_1);
                             }
-                            finally { if (e_1) throw e_1.error; }
+                            finally { if (e_2) throw e_2.error; }
                         }
                         console.assert(isFound, "M4");
                     }
                 }
-                catch (e_2_1) { e_2 = { error: e_2_1 }; }
+                catch (e_1_1) { e_1 = { error: e_1_1 }; }
                 finally {
                     try {
-                        if (o1_1_1 && !o1_1_1.done && (_c = o1_1["return"])) _c.call(o1_1);
+                        if (o1_1_1 && !o1_1_1.done && (_a = o1_1["return"])) _a.call(o1_1);
                     }
-                    finally { if (e_2) throw e_2.error; }
+                    finally { if (e_1) throw e_1.error; }
                 }
             }
             else {
@@ -99,7 +101,6 @@ exports.assertSame = assertSame;
         else {
             console.assert(o1 === o2, o1 + " !== " + o2);
         }
-        var e_2, _c, e_1, _b;
     }
     assertSame.perform = perform;
 })(assertSame = exports.assertSame || (exports.assertSame = {}));
@@ -115,8 +116,28 @@ exports.genHexStr = function (n) { return (new Array(n))
     .fill("")
     .map(function () { return (~~(Math.random() * 0x10)).toString(16); })
     .join(""); };
+var seedRandom;
+(function (seedRandom) {
+    var random = Math.random;
+    function plant(seed) {
+        Math.random = (function () {
+            var prev = undefined;
+            return function random() {
+                prev = seedrandom(prev === undefined ?
+                    seed :
+                    prev.toFixed(12))();
+                return prev;
+            };
+        })();
+    }
+    seedRandom.plant = plant;
+    function restore() {
+        Math.random = random;
+    }
+    seedRandom.restore = restore;
+})(seedRandom = exports.seedRandom || (exports.seedRandom = {}));
 /** Length is not Byte length but the number of char */
-function genUtf8Str(length, restrict) {
+function genUtf8Str(length, restrict, seed) {
     var charGenerator;
     switch (restrict) {
         case undefined:
@@ -129,7 +150,12 @@ function genUtf8Str(length, restrict) {
             charGenerator = genUtf8Str.genUtf8Char4B;
             break;
     }
-    return (new Array(length)).fill("").map(function () { return charGenerator(); }).join("");
+    if (typeof seed === "string") {
+        seedRandom.plant(seed);
+    }
+    var out = (new Array(length)).fill("").map(function () { return charGenerator(); }).join("");
+    seedRandom.restore();
+    return out;
 }
 exports.genUtf8Str = genUtf8Str;
 (function (genUtf8Str) {
