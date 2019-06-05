@@ -125,7 +125,7 @@ var seedRandom;
             return function random() {
                 prev = seedrandom(prev === undefined ?
                     seed :
-                    prev.toFixed(12))();
+                    prev.toFixed(12), { "global": false }).quick();
                 return prev;
             };
         })();

@@ -140,7 +140,7 @@ export namespace seedRandom {
                     prev === undefined ?
                         seed :
                         prev.toFixed(12)
-                )() as number;
+                    , { "global": false }).quick() as number;
 
                 return prev;
 
