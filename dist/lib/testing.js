@@ -12,6 +12,11 @@ var __values = (this && this.__values) || function (o) {
 exports.__esModule = true;
 var stringTransform_1 = require("./stringTransform");
 var seedrandom = require("seedrandom");
+function assert(bool, message) {
+    if (!bool) {
+        throw new Error(message);
+    }
+}
 /** Compare if two object represent the same data, [ "ok", "foo" ] <=> [ "foo", "ok" ] */
 function assertSame(o1, o2, errorMessage) {
     if (errorMessage === void 0) { errorMessage = "assertSame error"; }
@@ -32,26 +37,26 @@ exports.assertSame = assertSame;
         var e_1, _a, e_2, _b;
         if (o1 instanceof Date) {
             if (!(o2 instanceof Date)) {
-                console.assert(false, "M0");
+                assert(false, "M0");
                 return;
             }
-            console.assert(o1.getTime() === o2.getTime(), "Date mismatch");
+            assert(o1.getTime() === o2.getTime(), "Date mismatch");
         }
         else if (o1 instanceof Object) {
-            console.assert(o2 instanceof Object, "M1");
+            assert(o2 instanceof Object, "M1");
             if (assertSame.handleArrayAsSet && o1 instanceof Array) {
                 if (!(o2 instanceof Array)) {
-                    console.assert(false, "M2");
+                    assert(false, "M2");
                     return;
                 }
-                console.assert(o1.length === o2.length, "M3");
+                assert(o1.length === o2.length, "M3");
                 var o2Set = new Set(o2);
                 try {
                     for (var o1_1 = __values(o1), o1_1_1 = o1_1.next(); !o1_1_1.done; o1_1_1 = o1_1.next()) {
                         var val1 = o1_1_1.value;
                         var isFound = false;
                         try {
-                            for (var o2Set_1 = __values(o2Set), o2Set_1_1 = o2Set_1.next(); !o2Set_1_1.done; o2Set_1_1 = o2Set_1.next()) {
+                            for (var o2Set_1 = (e_2 = void 0, __values(o2Set)), o2Set_1_1 = o2Set_1.next(); !o2Set_1_1.done; o2Set_1_1 = o2Set_1.next()) {
                                 var val2 = o2Set_1_1.value;
                                 try {
                                     perform(val1, val2);
@@ -71,7 +76,7 @@ exports.assertSame = assertSame;
                             }
                             finally { if (e_2) throw e_2.error; }
                         }
-                        console.assert(isFound, "M4");
+                        assert(isFound, "M4");
                     }
                 }
                 catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -85,10 +90,10 @@ exports.assertSame = assertSame;
             else {
                 if (o1 instanceof Array) {
                     if (!(o2 instanceof Array)) {
-                        console.assert(false, "M5");
+                        assert(false, "M5");
                         return;
                     }
-                    console.assert(o1.length === o2.length, "M6");
+                    assert(o1.length === o2.length, "M6");
                 }
                 else {
                     perform(Object.keys(o1).filter(function (key) { return o1[key] !== undefined; }), Object.keys(o2).filter(function (key) { return o2[key] !== undefined; }));
@@ -99,7 +104,7 @@ exports.assertSame = assertSame;
             }
         }
         else {
-            console.assert(o1 === o2, o1 + " !== " + o2);
+            assert(o1 === o2, o1 + " !== " + o2);
         }
     }
     assertSame.perform = perform;

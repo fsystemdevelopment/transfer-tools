@@ -1,6 +1,14 @@
 import { safeBufferFromTo } from "./stringTransform";
 import * as seedrandom from "seedrandom";
 
+function assert(bool: boolean, message: string): void {
+
+    if (!bool) {
+        throw new Error(message);
+    }
+
+}
+
 /** Compare if two object represent the same data, [ "ok", "foo" ] <=> [ "foo", "ok" ] */
 export function assertSame<T>(
     o1: T, o2: T, errorMessage: string = "assertSame error"
@@ -29,24 +37,24 @@ export namespace assertSame {
         if (o1 instanceof Date) {
 
             if (!(o2 instanceof Date)) {
-                console.assert(false, "M0");
+                assert(false, "M0");
                 return;
             }
 
-            console.assert(o1.getTime() === o2!.getTime(), "Date mismatch");
+            assert(o1.getTime() === o2!.getTime(), "Date mismatch");
 
         } else if (o1 instanceof Object) {
 
-            console.assert(o2 instanceof Object, "M1");
+            assert(o2 instanceof Object, "M1");
 
             if (handleArrayAsSet && o1 instanceof Array) {
 
                 if (!(o2 instanceof Array)) {
-                    console.assert(false, "M2");
+                    assert(false, "M2");
                     return;
                 }
 
-                console.assert(o1.length === o2.length, "M3");
+                assert(o1.length === o2.length, "M3");
 
                 let o2Set = new Set(o2);
 
@@ -68,7 +76,7 @@ export namespace assertSame {
 
                     }
 
-                    console.assert(isFound, "M4");
+                    assert(isFound, "M4");
 
                 }
 
@@ -77,11 +85,11 @@ export namespace assertSame {
                 if (o1 instanceof Array) {
 
                     if (!(o2 instanceof Array)) {
-                        console.assert(false, "M5");
+                        assert(false, "M5");
                         return;
                     }
 
-                    console.assert(o1.length === o2.length, "M6");
+                    assert(o1.length === o2.length, "M6");
 
                 } else {
 
@@ -100,7 +108,7 @@ export namespace assertSame {
 
         } else {
 
-            console.assert(o1 === o2, `${o1} !== ${o2}`);
+            assert(o1 === o2, `${o1} !== ${o2}`);
 
         }
 
