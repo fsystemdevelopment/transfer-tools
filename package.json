@@ -1,10 +1,10 @@
 {
-  "name": "transfer-tools",
+  "name": "transfer-tools-bccp",
   "version": "1.1.2",
   "description": "Tools for sending data over the network",
   "repository": {
     "type": "git",
-    "url": "git://github.com/garronej/transfer-tools.git"
+    "url": "git://github.com/fsystemdevelopment/transfer-tools.git"
   },
   "main": "./dist/lib/index.js",
   "types": "./dist/lib/index.d.ts",
@@ -13,7 +13,7 @@
     "tsc-w": "node ./node_modules/typescript/bin/tsc -w -p ./tsconfig.json",
     "test": "node ./dist/test/index"
   },
-  "author": "Joseph Garrone",
+  "author": "Bccp",
   "license": "MIT",
   "dependencies": {
     "super-json": "^2.2.0",
